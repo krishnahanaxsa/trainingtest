@@ -1,0 +1,29 @@
+ID: test
+_schema-version: '2.1'
+description: test
+version: 0.0.1
+modules:
+  - name: db1
+    type: hdb
+    path: db1
+    requires:
+      - name: hdi_db1
+        properties:
+          TARGET_CONTAINER: '~{hdi-container-name}'
+  - name: train_odata
+    type: nodejs
+    path: train_odata
+    provides:
+      - name: train_odata_api
+        properties:
+          url: '${default-url}'
+    requires:
+      - name: hdi_db1
+resources:
+  - name: hdi_db1
+    parameters:
+      config:
+        schema: TRAINING
+    properties:
+      hdi-container-name: '${service-name}'
+    type: com.sap.xs.hdi-container
